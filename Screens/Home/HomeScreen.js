@@ -17,16 +17,14 @@ export const HomeScreen = ({ navigation }) => {
     bookingData.length !== 0 ? navigation.navigate('CheckIn', { reference: bookingData }) : null;
   },[bookingData])
 
-  const fetchData = async (booking) => {
+  const fetchData = async () => {
     const result = await getBookingByReference(booking);
-    // console.log(result)
     result.result !== null ? setBookingData([result.result]) : null;
   }
 
   return (
     <>
       <NavigationMenu navigation={navigation}/>
-      <Text>This is HomeScreen</Text>
       <View style={styles.container}>
         <TextInput
           style={styles.txtInput}
@@ -37,7 +35,7 @@ export const HomeScreen = ({ navigation }) => {
                 color='#BEAD8E'
                 title="Check In"
                 onPress={() =>
-                    fetchData(booking) 
+                    fetchData() 
                 }
         />
         {/* <TouchableOpacity
@@ -54,11 +52,10 @@ export const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 100,
-    width: '100%',
     backgroundColor: '#333333',
   },
   txtInput: {
