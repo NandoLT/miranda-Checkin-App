@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Button, Image, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 
 
 
@@ -9,30 +9,25 @@ export const NavigationMenu = ({ navigation }) => {
         <View style={styles.container}>
             <Image 
                 style={styles.menuImageLogo}
-                source={require('../assets/H_logo.PNG')} 
+                source={require('../assets/H_logo.png')} 
+                // source={{uri:'asset:/assets/H_logo.png'}} 
             />
             <Image 
                 source={require('../assets/hotel_miranda_text.png')} 
+                // source={{uri:'asset:/hotel_miranda_text.png'}} 
                 style={{ width: 100 , height: 40 }}
             />
-            {/* <Button  
-                color='black'
-                title="Check In"
-                onPress={() =>
-                    navigation.navigate('CheckIn', { reference: '000000' })
-                }
-            />
-            <Button 
-                color='black'
-                title="Info"
-                onPress={() =>
-                    navigation.navigate('Info')
-                }
-            /> */}
             <TouchableOpacity
                 style={styles.button}
                 onPress={() =>
-                    navigation.navigate('CheckIn', { reference: 'empty' })
+                    navigation.reset({
+                        index: 0,
+                        routes: [
+                            { 
+                                name: 'Home'
+                            }
+                        ],
+                    })
                 }
             >
                 <Text style={styles.txtButton}>Check-In</Text>
@@ -63,7 +58,7 @@ const styles = StyleSheet.create({
         border:'1px solid grey'
     },
     menuImageLogo: {
-        boxShadow: '0px 0px 6px 1px',
+        // boxShadow: '0px 0px 6px 1px',
         width: 40,
         height: 40,
         marginRight: 20

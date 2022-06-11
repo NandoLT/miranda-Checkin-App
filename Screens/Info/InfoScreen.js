@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         backgroundColor: '#333333',
-        border:'1px solid grey'
+        borderWidth:'1px solid grey'
     },
     textTitle: {
         fontFamily: 'Roboto_400regular',

@@ -1,25 +1,43 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Alert, TextInput, TouchableOpacity } from 'react-native';
 import { NavigationMenu } from '../../components/NavigationMenu';
 import { getBookingByReference } from '../../dataService/getData';
 
 
 export const HomeScreen = ({ navigation }) => {
   
-  const initialState = '';
-
-  const [booking, setBooking] = useState(initialState);
+  let initialState = '';
+  
+  const [bookingReference, setBookingReference] = useState(initialState);
   const [bookingData, setBookingData] = useState([]);
-
+  
 
   useEffect(() => {
-    console.log('BOOKING DATA', bookingData);
-    bookingData.length !== 0 ? navigation.navigate('CheckIn', { reference: bookingData }) : null;
+    bookingData.length !== 0 && navigation.navigate('CheckIn', { reference: bookingData });
   },[bookingData])
 
+
   const fetchData = async () => {
-    const result = await getBookingByReference(booking);
-    result.result !== null ? setBookingData([result.result]) : null;
+    const result = await getBookingByReference(bookingReference);
+    if(result.result !== null) {
+      const {check_in, check_out, guest, price} = result.result;
+      const infoBooking = {
+        guest,
+        'check In': (new Date(check_in)).toLocaleDateString(),
+        'check Out': (new Date(check_out)).toLocaleDateString(),
+        'total Price': price
+      }
+      setBookingData([infoBooking]);
+    } 
+    if(result.result === null) {
+      Alert.alert(
+        "Query Eror",
+        "Reference doesn't exist",
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]
+      );
+    }
   }
 
   return (
@@ -28,22 +46,17 @@ export const HomeScreen = ({ navigation }) => {
       <View style={styles.container}>
         <TextInput
           style={styles.txtInput}
-          placeholder="AAA0000"
-          onChangeText={newReference => setBooking(newReference)}
+          placeholder= "AAA0000"
+          onChangeText={newReference => setBookingReference(newReference)}
         />
-        <Button 
-                color='#BEAD8E'
-                title="Check In"
-                onPress={() =>
-                    fetchData() 
-                }
-        />
-        {/* <TouchableOpacity
+        <TouchableOpacity
             style={styles.button}
-            onPress={ fetchData }
+            onPress={ () =>
+              fetchData()  
+            }
         >
             <Text style={styles.txtButton}>CHECK IN</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     </>
   )
